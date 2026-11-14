@@ -27,11 +27,11 @@ aisladas. Los requisitos, riesgos y pruebas están al servicio de esta base.
 
 Licencia de APDR: [CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/).
 
-![APDR — Análisis de Problemas, Decisiones y Riesgos](https://raw.githubusercontent.com/cuyedmundo/apdr/main/skills/apdr/assets/apdr-banner.svg)
+![APDR — Análisis de Problemas, Decisiones y Riesgos](https://raw.githubusercontent.com/cuyedmundo/apdr/main/skills/apdr/assets/APDR_banner_1600x900.png)
 
 **Aclarar · Simplificar · Verificar**
 
-![APDR: aclarar el problema, reducir complejidad y comprobar con evidencia](https://raw.githubusercontent.com/cuyedmundo/apdr/main/skills/apdr/assets/apdr-showcase.svg)
+![APDR: aclarar el problema, reducir complejidad y comprobar con evidencia](https://raw.githubusercontent.com/cuyedmundo/apdr/main/skills/apdr/assets/APDR_preview_1200x900.png)
 
 ## Propósito y alcance
 

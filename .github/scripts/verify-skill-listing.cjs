@@ -8,8 +8,8 @@ const site = 'https://www.skills.sh';
 const listing = `${site}/${repository}/apdr`;
 const raw = `https://raw.githubusercontent.com/${repository}`;
 const skillPath = 'skills/apdr';
-const asset = `${skillPath}/assets/apdr.webp`;
-const imageSource = `${raw}/main/${asset}`;
+const assets = ['APDR_banner_1600x900.png', 'APDR_preview_1200x900.png']
+  .map(file => `${skillPath}/assets/${file}`);
 
 async function fetchFile(url) {
   const response = await fetch(url, { signal: AbortSignal.timeout(20000) });
@@ -53,9 +53,9 @@ function markdownFingerprint({ selectors, html, site }) {
 }
 
 async function verify() {
-  const [source, assetResponse] = await Promise.all([
+  const [source, ...expectedImages] = await Promise.all([
     fetchFile(`${raw}/${revision}/${skillPath}/SKILL.md`).then(response => response.text()),
-    fetchFile(`${raw}/${revision}/${asset}`),
+    ...assets.map(asset => fetchFile(`${raw}/${revision}/${asset}`).then(response => response.arrayBuffer())),
   ]);
   const [, header, body] = source.match(/^---\r?\n([\s\S]+?)\r?\n---\r?\n([\s\S]+)$/) ?? [];
   assert.ok(header && body, 'El SKILL.md de GitHub no tiene metadatos y contenido');
@@ -110,20 +110,23 @@ async function verify() {
     assert.equal(mismatch, -1, `El contenido visible difiere de GitHub en el bloque ${mismatch + 1} (${expected[mismatch]?.tag})`);
     assert.equal(actual.length, expected.length, 'La ficha muestra bloques adicionales que difieren de GitHub');
 
-    const image = intro.getByRole('img');
-    await image.scrollIntoViewIfNeeded();
-    await page.waitForFunction(node => node.complete && node.naturalWidth > 0, await image.elementHandle());
-    const displayedImage = new URL(await image.evaluate(node => node.currentSrc));
-    const isProxy = displayedImage.origin === site && displayedImage.pathname === '/api/image-proxy';
-    const displayedSource = isProxy ? displayedImage.searchParams.get('url') : displayedImage.href;
-    assert.equal(displayedSource, imageSource, 'La imagen visible apunta a otra ubicación');
-    const renderedImage = await fetchFile(displayedImage.href);
-    assert.match(renderedImage.headers.get('content-type') ?? '', /^image\/webp\b/);
-    const renderedBytes = Buffer.from(await renderedImage.arrayBuffer());
-    const expectedBytes = Buffer.from(await assetResponse.arrayBuffer());
-    assert.ok(renderedBytes.equals(expectedBytes), 'La imagen visible difiere del WebP de GitHub');
+    const images = skill.getByRole('img');
+    assert.equal(await images.count(), assets.length, 'Cantidad incorrecta de imágenes visibles');
+    for (const [index, asset] of assets.entries()) {
+      const image = images.nth(index);
+      await image.scrollIntoViewIfNeeded();
+      await page.waitForFunction(node => node.complete && node.naturalWidth > 0, await image.elementHandle());
+      const displayedImage = new URL(await image.evaluate(node => node.currentSrc));
+      const isProxy = displayedImage.origin === site && displayedImage.pathname === '/api/image-proxy';
+      const displayedSource = isProxy ? displayedImage.searchParams.get('url') : displayedImage.href;
+      assert.equal(displayedSource, `${raw}/main/${asset}`, 'La imagen visible apunta a otra ubicación');
+      const renderedImage = await fetchFile(displayedImage.href);
+      assert.match(renderedImage.headers.get('content-type') ?? '', /^image\/png\b/);
+      const renderedBytes = Buffer.from(await renderedImage.arrayBuffer());
+      assert.ok(renderedBytes.equals(Buffer.from(expectedImages[index])), `La imagen visible difiere de ${asset}`);
+    }
 
-    console.log(`Ficha actualizada — apdr ${version}, ${actual.length} bloques del SKILL.md y WebP verificados contra ${revision}.`);
+    console.log(`Ficha actualizada — apdr ${version}, ${actual.length} bloques del SKILL.md y ${assets.length} PNG verificados contra ${revision}.`);
   } finally {
     await browser.close();
   }

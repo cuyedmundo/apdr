@@ -6,7 +6,7 @@ Ayuda a resolver problemas en cualquier fase del desarrollo, prevenir errores lo
 
 [Ver y compartir APDR en Skills.sh](https://www.skills.sh/cuyedmundo/apdr/apdr) · [Leer la skill](skills/apdr/SKILL.md) · [Kit visual oficial y control de versiones](BRAND.md)
 
-![APDR — Análisis de Problemas, Decisiones y Riesgos](skills/apdr/assets/apdr-banner.svg)
+![APDR — Análisis de Problemas, Decisiones y Riesgos](skills/apdr/assets/APDR_banner_1600x900.png)
 
 <div align="center">
 
@@ -16,9 +16,9 @@ Ayuda a resolver problemas en cualquier fase del desarrollo, prevenir errores lo
 
 </div>
 
-![APDR: aclarar el problema, reducir complejidad, comprobar con evidencia](skills/apdr/assets/apdr-showcase.svg)
+![APDR: aclarar el problema, reducir complejidad, comprobar con evidencia](skills/apdr/assets/APDR_preview_1200x900.png)
 
-> **Identidad visual:** [logotipo](skills/apdr/assets/apdr-logo.svg) · [banner](skills/apdr/assets/apdr-banner.svg) · [imagen explicativa](skills/apdr/assets/apdr-showcase.svg). Los recursos pertenecen a APDR y se publican bajo [CC BY-NC-SA 4.0](LICENSE).
+> **Identidad visual:** [logotipo](skills/apdr/assets/APDR_logo_512.png) · [banner](skills/apdr/assets/APDR_banner_1600x900.png) · [imagen explicativa](skills/apdr/assets/APDR_preview_1200x900.png). Los recursos pertenecen a APDR y se publican bajo [CC BY-NC-SA 4.0](LICENSE).
 
 ## Instalar y usar
 

@@ -54,7 +54,10 @@ jobs:
               with urllib.request.urlopen(url, timeout=30) as response:
                   return response.read()
 
-          for name in ['SKILL.md', 'LICENSE', 'agents/openai.yaml', 'assets/apdr.webp']:
+          logo = 'APDR_logo_512.png'
+          embedded_images = ['APDR_banner_1600x900.png', 'APDR_preview_1200x900.png']
+          image_paths = [f'assets/{filename}' for filename in [logo, *embedded_images]]
+          for name in ['SKILL.md', 'LICENSE', 'agents/openai.yaml', *image_paths]:
               expected = read_source(f'skills/apdr/{name}')
               for directory in ['.agents/skills/apdr', '.claude/skills/apdr']:
                   installed = (root / directory / name).read_bytes()
@@ -86,9 +89,14 @@ jobs:
           assert f'https://www.skills.sh/{repo}/apdr' in readme, 'El README no enlaza la ficha canónica'
           assert f'npx skills add {repo} --skill apdr' in readme, 'El README no muestra el comando canónico'
           assert f'https://github.com/{repo}/issues' in readme, 'El README no enlaza los Issues canónicos'
-          assert '](skills/apdr/assets/apdr.webp)' in readme, 'Falta la imagen en el README'
-          image_url = f'https://raw.githubusercontent.com/{repo}/main/skills/apdr/assets/apdr.webp'
-          assert f']({image_url})' in source, 'El SKILL.md no enlaza la imagen canónica'
+          assert f'](skills/apdr/assets/{logo})' in readme, 'Falta el logotipo en el README'
+          for icon in ['icon_small', 'icon_large']:
+              assert f'{icon}: "./assets/{logo}"' in metadata, f'Falta el logotipo de APDR para {icon}'
+          for filename in embedded_images:
+              relative_image = f'skills/apdr/assets/{filename}'
+              assert f']({relative_image})' in readme, f'Falta {filename} en el README'
+              image_url = f'https://raw.githubusercontent.com/{repo}/main/{relative_image}'
+              assert f']({image_url})' in source, f'El SKILL.md no enlaza {filename}'
           for path in ['README.md', 'CONTRIBUTING.md', '.github/PULL_REQUEST_TEMPLATE.md']:
               text = read_source(path).decode('utf-8')
               assert 'sin perder valor' in text and 'producción' in text.lower(), f'Alcance incompleto en {path}'
