@@ -1,0 +1,144 @@
+name: Verificar APDR
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'skills/apdr/**'
+      - 'README.md'
+      - 'CONTRIBUTING.md'
+      - '.github/PULL_REQUEST_TEMPLATE.md'
+      - '.github/scripts/verify-skill-listing.cjs'
+      - '.github/workflows/verify-skill-install.yml'
+  workflow_dispatch:
+
+# Fuentes públicas y una instalación de prueba, sin secretos ni escritura en el repositorio.
+permissions: {}
+
+jobs:
+  install:
+    name: Instalación correcta
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Preparar Node.js 24
+        uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6
+        with:
+          node-version: '24'
+          package-manager-cache: false
+
+      - name: Instalar APDR con el CLI oficial
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p "$RUNNER_TEMP/apdr-check"
+          cd "$RUNNER_TEMP/apdr-check"
+          # Una instalación real. Usa el nombre actual del repositorio y conserva CI.
+          npx --yes skills@1.8.1 add "$GITHUB_REPOSITORY" --skill apdr -a codex claude-code --copy -y
+
+      - name: Comprobar estructura, coherencia e instalación
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          import hashlib
+          import os
+          import re
+          import urllib.request
+          from pathlib import Path
+
+          repo, ref = os.environ['GITHUB_REPOSITORY'], os.environ['GITHUB_SHA']
+          root = Path(os.environ['RUNNER_TEMP'], 'apdr-check')
+          title = 'APDR — Análisis de Problemas, Decisiones y Riesgos'
+          def read_source(path):
+              url = f'https://raw.githubusercontent.com/{repo}/{ref}/{path}'
+              with urllib.request.urlopen(url, timeout=30) as response:
+                  return response.read()
+
+          for name in ['SKILL.md', 'LICENSE', 'agents/openai.yaml', 'assets/apdr.webp']:
+              expected = read_source(f'skills/apdr/{name}')
+              for directory in ['.agents/skills/apdr', '.claude/skills/apdr']:
+                  installed = (root / directory / name).read_bytes()
+                  if installed != expected:
+                      raise SystemExit(f'{directory}/{name} no coincide con el commit verificado; revisar cambios concurrentes.')
+              print(f'Archivo verificado en ambos destinos: {name}; SHA256={hashlib.sha256(expected).hexdigest()}')
+
+          source = (root / '.agents/skills/apdr/SKILL.md').read_text(encoding='utf-8')
+          header = source.split('---', 2)[1]
+          assert re.search(r'^name: apdr$', header, re.M), 'Nombre incorrecto'
+          version_match = re.search(r'^\s+version:\s*"(\d+\.\d+\.\d+)"$', header, re.M)
+          assert version_match, 'Falta una versión válida'
+          version = version_match.group(1)
+          description = header.split('description: >-\n', 1)[1].split('\nlicense:', 1)[0]
+          assert 0 < len(' '.join(description.split())) <= 1024, 'Descripción fuera de límites'
+          assert len(source.splitlines()) < 500, 'Revisar longitud de la skill'
+          assert f'# {title}' in source, 'Título incoherente'
+          intro = ' '.join(source.split('## Propósito y alcance')[0].replace('**', '').lower().split())
+          required = ['kidlin', 'working backwards', 'diseño por sustracción', 'shift-left testing', 'no son recursos opcionales ni etapas aisladas', 'cualquier fase del desarrollo', 'sin perder valor']
+          assert all(item in intro for item in required), 'La introducción perdió la base, el alcance o el criterio de valor'
+          for phase in ['Requisitos y diseño', 'Desarrollo y pruebas', 'Producción y mantenimiento']:
+              assert phase in source, f'Falta orientación para {phase}'
+          readme = read_source('README.md').decode('utf-8')
+          metadata = (root / '.agents/skills/apdr/agents/openai.yaml').read_text(encoding='utf-8')
+          assert readme.startswith(f'# {title}\n'), 'Título del README incoherente'
+          assert f'**Versión:** {version}' in readme, 'Versión del README incoherente'
+          assert f'display_name: "{title}"' in metadata, 'Nombre visible incoherente'
+          assert '$apdr' in metadata and 'fase actual' in metadata, 'Invocación o alcance incoherente'
+          assert f'https://www.skills.sh/{repo}/apdr' in readme, 'El README no enlaza la ficha canónica'
+          assert f'npx skills add {repo} --skill apdr' in readme, 'El README no muestra el comando canónico'
+          assert f'https://github.com/{repo}/issues' in readme, 'El README no enlaza los Issues canónicos'
+          assert '](skills/apdr/assets/apdr.webp)' in readme, 'Falta la imagen en el README'
+          image_url = f'https://raw.githubusercontent.com/{repo}/main/skills/apdr/assets/apdr.webp'
+          assert f']({image_url})' in source, 'El SKILL.md no enlaza la imagen canónica'
+          for path in ['README.md', 'CONTRIBUTING.md', '.github/PULL_REQUEST_TEMPLATE.md']:
+              text = read_source(path).decode('utf-8')
+              assert 'sin perder valor' in text and 'producción' in text.lower(), f'Alcance incompleto en {path}'
+          print(f'INSTALACION_APDR_VERIFICADA=true; version={version}; agentes=codex,claude-code')
+          with open(os.environ['GITHUB_STEP_SUMMARY'], 'a', encoding='utf-8') as out:
+              out.write(f'## APDR {version}\n\nEstructura, coherencia, imagen e instalación verificadas contra el commit {ref}. No se ejecutaron modelos ni se evaluó automáticamente el razonamiento.\n\n')
+          PY
+
+      - name: Resultado de instalación
+        if: ${{ always() }}
+        env:
+          RESULTADO: ${{ job.status }}
+        run: |
+          if [ "$RESULTADO" = success ]; then
+            echo '## Instalación correcta — Sí' >> "$GITHUB_STEP_SUMMARY"
+          else
+            echo "## Instalación correcta — Sin verificar ($RESULTADO)" >> "$GITHUB_STEP_SUMMARY"
+          fi
+
+  listing:
+    name: Ficha actualizada
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Preparar Node.js 24
+        uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6
+        with:
+          node-version: '24'
+          package-manager-cache: false
+
+      - name: Preparar Chromium y el verificador
+        run: |
+          cd "$RUNNER_TEMP"
+          npm install --no-save --no-package-lock --ignore-scripts playwright@1.65.1 markdown-it@15.0.3
+          npx --no-install playwright install --with-deps chromium
+          curl --fail --silent --show-error --location \
+            "https://raw.githubusercontent.com/$GITHUB_REPOSITORY/$GITHUB_SHA/.github/scripts/verify-skill-listing.cjs" \
+            --output verify-skill-listing.cjs
+
+      - name: Comparar la ficha pública con GitHub
+        run: node "$RUNNER_TEMP/verify-skill-listing.cjs"
+
+      - name: Resultado de publicación
+        if: ${{ always() }}
+        env:
+          RESULTADO: ${{ job.status }}
+        run: |
+          if [ "$RESULTADO" = success ]; then
+            echo '## Ficha actualizada — Sí' >> "$GITHUB_STEP_SUMMARY"
+          else
+            echo "## Ficha actualizada — Sin verificar ($RESULTADO)" >> "$GITHUB_STEP_SUMMARY"
+          fi
+          echo "https://www.skills.sh/$GITHUB_REPOSITORY/apdr" >> "$GITHUB_STEP_SUMMARY"

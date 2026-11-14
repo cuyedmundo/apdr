@@ -1,0 +1,4 @@
+interface:
+  display_name: "APDR — Análisis de Problemas, Decisiones y Riesgos"
+  short_description: "Resuelve problemas y riesgos sin perder valor"
+  default_prompt: "Usa $apdr para analizar este problema en su fase actual, orientar una solución sin perder valor y proponer cómo verificarla y evitar que se repita."
