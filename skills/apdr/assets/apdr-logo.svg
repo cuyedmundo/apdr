@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 800" role="img" aria-labelledby="title desc"><title id="title">APDR</title><desc id="desc">Logotipo de Análisis de Problemas, Decisiones y Riesgos: diagrama, decisiones verificadas y riesgos</desc><defs>
+<linearGradient id="sea" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#08e1bb"/><stop offset="1" stop-color="#08b9ef"/></linearGradient>
+<linearGradient id="navy" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#06142f"/><stop offset="1" stop-color="#0b2a55"/></linearGradient>
+</defs><rect x="20" y="20" width="760" height="760" rx="126" fill="url(#navy)"/>
+<circle cx="400" cy="400" r="336" fill="none" stroke="url(#sea)" stroke-width="23" stroke-dasharray="1670 445" transform="rotate(-137 400 400)"/>
+<rect x="304" y="140" width="192" height="93" rx="19" fill="none" stroke="#fff" stroke-width="12"/>
+<circle cx="400" cy="187" r="25" fill="none" stroke="#fff" stroke-width="12"/>
+<path d="M400 150V165 M400 210V224 M363 187H377 M423 187H437 M374 162L383 171 M417 203L426 212 M425 162L415 172 M383 203L374 212" stroke="#fff" stroke-width="9" stroke-linecap="round"/>
+<path d="M400 233V256" fill="none" stroke="#fff" stroke-width="12"/>
+<path d="M400 256L454 300L400 345L346 300Z" fill="#05dbc2" stroke="#fff" stroke-width="8"/>
+<path d="M346 300H265Q235 300 235 333V383 M400 345V383 M454 300H535Q565 300 565 333V383" fill="none" stroke="#fff" stroke-width="11" stroke-linecap="round"/>
+<path d="M219 376L235 394L251 376 M384 376L400 394L416 376 M549 376L565 394L581 376" fill="none" stroke="#fff" stroke-width="8" stroke-linecap="round"/>
+<rect x="183" y="396" width="105" height="92" rx="19" fill="#fff"/><path d="M211 467V451H226V467 M236 467V435H251V467 M261 467V418H276V467" fill="#08254c"/>
+<rect x="347" y="396" width="106" height="92" rx="19" fill="#fff"/><path d="M370 443L389 460L432 419" fill="none" stroke="#092650" stroke-width="14" stroke-linecap="round" stroke-linejoin="round"/>
+<rect x="512" y="396" width="105" height="92" rx="19" fill="#fff"/><path d="M565 416L598 472H532Z" fill="#08254c"/><path d="M565 434V451" stroke="#fff" stroke-width="7" stroke-linecap="round"/><circle cx="565" cy="462" r="4" fill="#fff"/>
+<path d="M561 185L627 150L693 185V244Q679 298 627 323Q574 298 561 244Z" fill="#008c83" stroke="#fff" stroke-width="12"/><path d="M588 230L618 258L669 204" fill="none" stroke="#fff" stroke-width="15" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="400" y="626" fill="#fff" text-anchor="middle" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="151" font-weight="800" letter-spacing="1">APDR</text>
+<rect x="180" y="645" width="440" height="9" rx="4.5" fill="#06d5df"/>
+<text x="400" y="695" fill="#fff" text-anchor="middle" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="30" font-weight="600">Análisis de Problemas,</text>
+<text x="400" y="734" fill="#fff" text-anchor="middle" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="30" font-weight="600">Decisiones y Riesgos</text></svg>
