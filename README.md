@@ -4,7 +4,7 @@ Ayuda a resolver problemas en cualquier fase del desarrollo, prevenir errores lo
 
 **Skill:** `apdr` · **Autor:** Cuyedmundo · **Versión:** 2.2.0
 
-[Ver y compartir APDR en Skills.sh](https://www.skills.sh/cuyedmundo/apdr/apdr) · [Leer la skill](skills/apdr/SKILL.md)
+[Ver y compartir APDR en Skills.sh](https://www.skills.sh/cuyedmundo/apdr/apdr) · [Leer la skill](skills/apdr/SKILL.md) · [Kit visual oficial y control de versiones](BRAND.md)
 
 ![APDR — Análisis de Problemas, Decisiones y Riesgos](skills/apdr/assets/apdr-banner.svg)
 
