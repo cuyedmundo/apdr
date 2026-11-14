@@ -6,7 +6,19 @@ Ayuda a resolver problemas en cualquier fase del desarrollo, prevenir errores lo
 
 [Ver y compartir APDR en Skills.sh](https://www.skills.sh/cuyedmundo/apdr/apdr) · [Leer la skill](skills/apdr/SKILL.md)
 
-![APDR: Kidlin, Working Backwards, diseño por sustracción y shift-left testing integrados en cualquier fase del desarrollo](skills/apdr/assets/apdr.webp)
+![APDR — Análisis de Problemas, Decisiones y Riesgos](skills/apdr/assets/apdr-banner.svg)
+
+<div align="center">
+
+**Aclarar · Simplificar · Verificar**
+
+[Instalar](#instalar-y-usar) · [Casos de uso](#cuándo-usarla-y-qué-esperar) · [Documentación](skills/apdr/SKILL.md) · [Skills.sh](https://www.skills.sh/cuyedmundo/apdr/apdr)
+
+</div>
+
+![APDR: aclarar el problema, reducir complejidad, comprobar con evidencia](skills/apdr/assets/apdr-showcase.svg)
+
+> **Identidad visual:** [logotipo](skills/apdr/assets/apdr-logo.svg) · [banner](skills/apdr/assets/apdr-banner.svg) · [imagen explicativa](skills/apdr/assets/apdr-showcase.svg). Los recursos pertenecen a APDR y se publican bajo [CC BY-NC-SA 4.0](LICENSE).
 
 ## Instalar y usar
 
