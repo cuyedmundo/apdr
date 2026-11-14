@@ -27,7 +27,11 @@ aisladas. Los requisitos, riesgos y pruebas están al servicio de esta base.
 
 Licencia de APDR: [CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/).
 
-![APDR: Kidlin, Working Backwards, diseño por sustracción y shift-left testing integrados en cualquier fase del desarrollo](https://raw.githubusercontent.com/cuyedmundo/apdr/main/skills/apdr/assets/apdr.webp)
+![APDR — Análisis de Problemas, Decisiones y Riesgos](https://raw.githubusercontent.com/cuyedmundo/apdr/main/skills/apdr/assets/apdr-banner.svg)
+
+**Aclarar · Simplificar · Verificar**
+
+![APDR: aclarar el problema, reducir complejidad y comprobar con evidencia](https://raw.githubusercontent.com/cuyedmundo/apdr/main/skills/apdr/assets/apdr-showcase.svg)
 
 ## Propósito y alcance
 
